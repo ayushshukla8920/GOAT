@@ -1,22 +1,15 @@
 const express = require('express');
 const app = express();
-const chromium = require("@sparticuz/chromium");
-const puppeteer = require("puppeteer-core");
+const puppeteer = require('puppeteer');
 
 app.get('/product-goat', async (req, res) => {
-    let browser = null;
     try {
         const { productTemplateId, countryCode } = req.query;
         if (!productTemplateId || !countryCode) {
             return res.status(400).json({ error: "Missing productTemplateId or countryCode" });
         }
         const apiUrl = `https://www.goat.com/web-api/v1/product_variants/buy_bar_data?productTemplateId=${productTemplateId}&countryCode=${countryCode}`;
-        browser = await puppeteer.launch({
-            args: chromium.args,
-            defaultViewport: chromium.defaultViewport,
-            executablePath: await chromium.executablePath(),
-            headless: chromium.headless,
-        });
+        const browser = await puppeteer.launch({ headless: true });
         const page = await browser.newPage();
         await page.setUserAgent('Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36');
         await page.goto(apiUrl, {
