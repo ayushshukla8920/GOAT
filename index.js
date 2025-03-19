@@ -1,6 +1,5 @@
 const express = require('express');
 const app = express();
-const axios = require('axios');
 const puppeteer = require('puppeteer');
 
 app.get('/product-goat', async (req, res) => {
@@ -36,7 +35,6 @@ app.get('/product-goat', async (req, res) => {
         return res.status(500).json({err: error});
     }
 });
-
 
 app.listen(3000,()=>{
     console.log(`Server Running on PORT: 3000`);
