@@ -16,7 +16,6 @@ app.get('/product-goat', async (req, res) => {
         await page.goto(apiUrl, {
             waitUntil: 'networkidle2'
         });
-        const content = await page.content();
         const jsonData = await page.evaluate(() => {
             const preTag = document.querySelector('pre');
             return preTag ? preTag.innerText : null;
@@ -25,7 +24,6 @@ app.get('/product-goat', async (req, res) => {
             try {
                 const parsedData = JSON.parse(jsonData);
                 return res.status(200).json({ data: parsedData });
-
             } catch (error) {
                 console.error("Error parsing JSON:", error);
             }
@@ -34,6 +32,7 @@ app.get('/product-goat', async (req, res) => {
         }
         await browser.close();
     } catch (error) {
+        console.error("Error parsing JSON:", error);
         return res.status(500).json({err: error});
     }
 });
